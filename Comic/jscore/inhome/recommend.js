@@ -86,7 +86,7 @@ export default class Recommend extends Component {
     })
 
     this.timer = setTimeout(() => {
-      this._fetchMoreData()
+      this._fetchData()
     }, 500);
   }
 
@@ -98,7 +98,10 @@ export default class Recommend extends Component {
     return (
       // holder
       <View style={styles.comicHolder}>
-        <CustomImg style={styles.comicIcon} img={{ uri: item.icon }} />
+        <CustomImg params={{
+          style: styles.comicIcon, img: { uri: item.icon },
+          navigation: this.props.navigation, id: item.id
+        }} />
         {/* 文字区域 */}
         <View style={{ flex: 1, marginLeft: 2 }}>
           <Text style={{ color: 'black' }}>{item.name}</Text>
@@ -117,7 +120,6 @@ export default class Recommend extends Component {
         </View>
       </View >
     );
-
   }
 }
 

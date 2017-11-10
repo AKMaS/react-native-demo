@@ -53,7 +53,8 @@ export default class CustomList extends Component {
   _renderItem(item) {
     return (
       <View style={styles.comic}>
-        <CustomImg style={styles.comicIcon} img={{ uri: item.icon }} />
+        {/* <CustomImg style={styles.comicIcon} img={{ uri: item.icon }} /> */}
+        <CustomImg params={{style:styles.comicIcon,img:{uri: item.icon },navigation:this.props.navigation,id:item.id}} />
         <Text style={styles.comicTitle} numberOfLines={1}>{item.name}</Text>
         <Text style={styles.comicAuthor} numberOfLines={1}>{item.author}</Text>
       </View>

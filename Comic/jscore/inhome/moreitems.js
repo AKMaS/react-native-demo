@@ -30,6 +30,7 @@ export default class MoreItems extends Component {
       elevation: 0,
       height: 50,
       backgroundColor: '#fddb27',
+      // backgroundColor:'transparent',
     },
     headerTitleStyle: {
       fontSize: 12,
@@ -42,7 +43,7 @@ export default class MoreItems extends Component {
     super(props);
     this.state = {
       moreData: [],
-      loading: '1',
+      loading: '0',
     };
   }
 
@@ -75,8 +76,9 @@ export default class MoreItems extends Component {
     } else if (this.state.loading === '1') {
       return (
         <FlatList
+
           renderItem={({ item }) => this._renderItem(item)}
-          onEndReached={() => this._fetchMoreData()}
+          onEndReached={() => this._fetchData()}
           onEndReachedThreshold={0.1}
           refreshing={false}
           onRefresh={() => this._OnRefresh()}
@@ -98,7 +100,7 @@ export default class MoreItems extends Component {
       moreData: [],
     })
     this.timer = setTimeout(() => {
-      this._fetchMoreData()
+      this._fetchData()
     }, 500);
   }
 
@@ -106,7 +108,11 @@ export default class MoreItems extends Component {
     return (
       // holder
       <View style={styles.comicHolder}>
-        <CustomImg style={styles.comicIcon} img={{ uri: item.icon }} />
+        <CustomImg params={{
+          style: styles.comicIcon, img: { uri: item.icon },
+          navigation: this.props.navigation, id: item.id,
+        }}
+        />
         {/* 文字区域 */}
         <View style={{ flex: 1, marginLeft: 2 }}>
           <Text style={{ color: 'black' }}>{item.name}</Text>

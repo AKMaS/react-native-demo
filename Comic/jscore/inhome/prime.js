@@ -45,13 +45,13 @@ export default class Prime extends Component {
       loading: '0',
     };
   }
-
+ 
   componentDidMount() {
     this.timer = setTimeout(() => {
       this.setState({
         visibleSwiper: true
       });
-    }, 0);
+    }, 10);
     this._fetchData();
   }
 

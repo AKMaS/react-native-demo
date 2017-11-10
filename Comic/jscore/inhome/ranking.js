@@ -90,13 +90,20 @@ export default class Rank extends Component {
         <View style={{ margin: 5, flexDirection: 'row', alignItems: 'flex-end', backgroundColor: '#ffffff' }}>
           <View style={{ flex: 1, alignItems: 'center', }}>
             <Text style={{ color: '#ffab64', fontSize: 16, fontWeight: '900', }}>NO.2</Text>
-            <CustomImg img={{ uri: no2.icon }} style={{ height: 150, width: 120 }} />
-            <Text style={{ fontSize: 12 }}>{no2.name}</Text>
+            <CustomImg params={{
+              img: { uri: no2.icon }, style: { height: 150, width: 120 }
+              , navigation: this.props.navigation, id: no2.id
+            }} />
+            <Text style={{ fontSize: 12 }} numberOfLines={1}>{no2.name}</Text>
           </View>
           {/*每个条目 */}
           <View style={{ flex: 1, alignItems: 'center' }}>
             <Text style={{ color: '#ff7370', fontSize: 16, fontWeight: '900', }}>NO.1</Text>
-            <CustomImg img={{ uri: no1.icon }} style={{ height: 200, width: 120 }} />
+
+            <CustomImg params={{
+              img: { uri: no1.icon }, style: { height: 200, width: 120 },
+              navigation: this.props.navigation, id: no1.id
+            }} />
             <Text style={{ fontSize: 12 }}>{no1.name}</Text>
           </View>
           {/*每个条目 */}
@@ -104,7 +111,10 @@ export default class Rank extends Component {
           {/*每个条目 */}
           <View style={{ flex: 1, alignItems: 'center' }}>
             <Text style={{ color: '#ffd500', fontSize: 16, fontWeight: '900', }}>NO.3</Text>
-            <CustomImg img={{ uri: no3.icon }} style={{ height: 130, width: 120 }} />
+            <CustomImg params={{
+              img: { uri: no3.icon }, style: { height: 130, width: 120 }
+              , navigation: this.props.navigation, id: no3.id
+            }} />
             <Text style={{ fontSize: 12 }}>{no3.name}</Text>
           </View>
         </View>
@@ -117,7 +127,11 @@ export default class Rank extends Component {
     return (
       // holder
       <View style={styles.comicHolder}>
-        <CustomImg style={styles.comicIcon} img={{ uri: item.icon }} />
+
+        <CustomImg params={{
+          style: styles.comicIcon, img: { uri: item.icon },
+          navigation: this.props.navigation, id: item.id
+        }} />
         {/* 文字区域 */}
         <View style={{ flex: 1, marginLeft: 2 }}>
           <Text style={{ color: 'black' }}>{item.name}</Text>

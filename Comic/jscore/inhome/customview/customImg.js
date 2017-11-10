@@ -9,6 +9,7 @@ import {
   Platform,
   StyleSheet,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 
 export default class CustomImg extends Component {
@@ -19,13 +20,18 @@ export default class CustomImg extends Component {
 
   render() {
     return (
-      <Image
-        style={this.props.style}
-        source={require('/Users/king/Documents/workspace/reactnative/Comic/imgs/icon/ic_empty.png')}>
+      <TouchableOpacity activeOpacity={0.7} onPress={() => this._onClick()}>
         <Image
-          style={this.props.style}
-          source={this.props.img} />
-      </Image>
+          style={this.props.params.style}
+          source={require('../../../imgs/icon/ic_empty.png')}>
+          <Image
+            style={this.props.params.style}
+            source={this.props.params.img} />
+        </Image>
+      </TouchableOpacity >
     );
+  }
+  _onClick() {
+    this.props.params.navigation.navigate('ComicDetail', { title: '漫画介绍', id: this.props.params.id });
   }
 }

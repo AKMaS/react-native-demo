@@ -22,6 +22,7 @@ import { TabNavigator } from 'react-navigation';
 const { width, height } = Dimensions.get('window');
 
 export default Tab = TabNavigator({
+
   Home: {
     screen: HomePage,
     navigationOptions: {

@@ -10,7 +10,10 @@ import {
   StyleSheet,
   Image,
   Text,
-  View
+  View,
+  FlatList,
+  Dimensions,
+  Modal,
 } from 'react-native';
 
 
@@ -31,29 +34,78 @@ export default class BookSheet extends Component {
     ),
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      readData: [],
+      modalFinishVisible: false,
+      modalHelpVisible: false,
+    }
+  }
+  componentDidMount() {
+    // const title =this.props.navigation
+    this._fetchData();
+  }
+
+  _fetchData() {
+
+    var readUrl = 'http://a121.baopiqi.com/api/mh/getCartoonChapter.php?number=45856&id=485&page=0&limit=1000000';
+    fetch(readUrl).then(response => response.json())
+      .then(data => this.setState({ readData: data, }))
+      .catch(e => console.log(e)).done();
+  }
 
   render() {
     return (
-      <CustomImage />
+
+
+      <View>
+        <FlatList
+          data={this.state.readData}
+          keyExtractor={(item) => item.page}
+          renderItem={({ item }) => this._renderItem(item)}
+          pagingEnabled={true}
+          refreshing={false}
+          horizontal={true}
+          onEndReachedThreshold={0}
+          initialNumToRender={1}
+          getItemLayout={(data, index) => ({ length: width, offset: width * index, index })}
+          onEndReached={(distanceFromEnd) => {
+            this.setState({ modalFinishVisible: true });
+            console.log(distanceFromEnd)
+          }}
+        />
+
+        <Modal
+          animationType='none'
+          transparent={true}
+          onRequestClose={() => this._changeModal()}
+          visible={this.state.modalFinishVisible}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
+            <View style={{ height: height / 5, width: width / 2, backgroundColor: '#ffffff' }}>
+              < View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
+                <Text>sdfskskljfsk</Text>
+              </View>
+            </View>
+          </View>
+        </Modal >
+      </View>
     );
   }
-}
-export class CustomImage extends Component {
-
-  render() {
+  _changeModal() {
+    this.setState({ modalHelpVisible: false, modalFinishVisible: false });
+  }
+  _renderItem(item) {
     return (
       <Image
-        style={{ width: 200, height: 100 }}
-        source={require('/Users/king/Documents/workspace/reactnative/Comic/imgs/icon/ic_empty.png')}>
-        <Image
-          style={{ width: 200, height: 100 }}
-          source={{ uri: 'http://img3.tebiekandian.com/imgv/11e47449f6b52d48908a498a62abafea.jpg' }} />
-      </Image>
+        style={{ width: width / 2, height: height / 2 }}
+        source={{ uri: item.icon }} />
     );
   }
 }
 
 
+const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
   tabicon: {
     width: 60,

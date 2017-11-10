@@ -34,7 +34,7 @@ export default class Vip extends Component {
   }
 
   componentDidMount() {
-    this._fetchWrongData();
+    this._fetchData();
   }
 
   _fetchWrongData() {
