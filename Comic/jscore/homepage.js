@@ -11,7 +11,7 @@ import {
   StyleSheet,
   Text,
   View,
-  backHan
+  backHan,
 } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 import Prime from './inhome/prime';
@@ -21,7 +21,7 @@ import Recommend from './inhome/recommend';
 
 const TabInHome = TabNavigator({
   PrimeTab: {
-    screen: Prime, 
+    screen: Prime,
   },
   RankingTab: {
     screen: Ranking,
@@ -34,17 +34,29 @@ const TabInHome = TabNavigator({
   }
 }, {
     tabBarPosition: 'top',
-    swipeEnabled: false,
-    animationEnabled: false,
+    swipeEnabled: true,
+    animationEnabled: true,
     lazy: true,
     tabBarOptions: {
       scrollEnabled: false,
       style: { backgroundColor: '#fddb27' },
       labelStyle: { color: 'black', fontSize: 10, marginBottom: -2 },
       indicatorStyle: {
-        height: 0
+        height: 1,
+        backgroundColor:'red'
       },
     },
   });
 
+
 export default TabInHome;
+// class Tab extends Component {
+
+//   render() {
+
+//     return (
+//       <TabInHome />);
+//   }
+// }
+
+// export default Tab;

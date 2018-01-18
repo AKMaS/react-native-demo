@@ -14,86 +14,103 @@ import {
   Button,
   FlatList,
   Dimensions,
+  ToastAndroid
 } from 'react-native';
+import { connect } from 'react-redux'
 import CustomImg from './customview/customImg';
 import CustomLoadingView from './customview/customLoadingview'
 import CustomReLoad from './customview/customReLoad';
+import fetchdataactions from '../redux/action/fetchdataactions';
 
 const TestMoreDataUrl = 'https://akmas.github.io/comic/fakedata/fakedata2.json';
-export default class Recommend extends Component {
+class Recommend extends Component {
   static navigationOptions = {
     tabBarLabel: '推荐',
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      moreData: [],
-      loading: '0',
-    };
+    // this.state = {
+    //   moreData: [],
+    //   loading: '0',
+    // };
   }
 
   componentDidMount() {
-    this._fetchData();
+    this._fetchData()
   }
 
   _fetchWrongData() {
-    this.setState({ loading: '-1' });
+
+  }
+
+  _fetchMoreData() {
+    ToastAndroid.show('再也没有更多啦', ToastAndroid.SHORT);
   }
 
   _fetchData() {
-    fetch(TestMoreDataUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('detchdata');
-        console.log(data);
-        this.setState({
-          moreData: this.state.moreData.concat(data),
-          loading: '1',
-        })
-      }
-      ).catch(e => this.setState({ loading: '-1' }))
+    const { fetchListData } = fetchdataactions
+    this.props.dispatch(fetchListData(TestMoreDataUrl, 'RECOMMEND'))
   }
 
+  //经有Redux重构
   render() {
-    if (this.state.loading === '0') {
+    if (this.props.status === '' || this.props.status === '0') {
       return (<CustomLoadingView />)
-    } else if (this.state.loading === '1') {
+    } else if (this.props.status === '1') {
+      const { data } = this.props;
       return (
         <FlatList
           renderItem={({ item }) => this._renderItem(item)}
-          data={this.state.moreData}
-          extraData={this.state.headerData}
+          data={data}
           onEndReached={() => this._fetchMoreData()}
           onEndReachedThreshold={0.1}
           refreshing={false}
           onRefresh={() => this._OnRefresh()}
           keyExtractor={(item) => item.id} />
       )
-    } else if (this.state.loading === '-1') {
+    } else if (this.props.status === '-1') {
       return (
         <View style={{ justifyContent: 'center' }}>
+          <Text>{this.props.data}</Text>
           <CustomReLoad
-            onClick={() => { this._fetchData(); this.setState({ loading: '0' }) }} />
+            onClick={() => { this._fetchData(); }} />
         </View>
       )
     }
   }
 
+
+  /**2018.1.18封印*/
+  // render() {
+  //   console.log(this.props);
+  //   if (this.state.loading === '0') {
+  //     return (<CustomLoadingView />)
+  //   } else if (this.state.loading === '1') {
+  //     return (
+  //       <FlatList
+  //         renderItem={({ item }) => this._renderItem(item)}
+  //         data={this.state.moreData}
+  //         extraData={this.state.headerData}
+  //         onEndReached={() => this._fetchMoreData()}
+  //         onEndReachedThreshold={0.1}
+  //         refreshing={false}
+  //         onRefresh={() => this._OnRefresh()}
+  //         keyExtractor={(item) => item.id} />
+  //     )
+  //   } else if (this.state.loading === '-1') {
+  //     return (
+  //       <View style={{ justifyContent: 'center' }}>
+  //         <CustomReLoad
+  //           onClick={() => { this._fetchData(); this.setState({ loading: '0' }) }} />
+  //       </View>
+  //     )
+  //   }
+  // }
+
   _OnRefresh() {
-    this.setState({
-      moreData: [],
-    })
-
-    this.timer = setTimeout(() => {
-      this._fetchData()
-    }, 500);
+    this._fetchData()
   }
-
-  componentWillUnmount() {
-    this.timer && clearTimeout(this.timer);
-  }
-
   _renderItem(item) {
     return (
       // holder
@@ -122,6 +139,16 @@ export default class Recommend extends Component {
     );
   }
 }
+
+function mapStoreToProps(store) {
+  return {
+    status: store.fetch.recommendPage.status,
+    data: store.fetch.recommendPage.data,
+  }
+}
+
+export default connect(mapStoreToProps)(Recommend);
+
 
 const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({

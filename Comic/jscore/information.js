@@ -43,6 +43,7 @@ export default class Information extends Component {
   }
 
   componentDidMount() {
+    console.log('information=>componentDidMount');
     this._fetchData();
   }
 
@@ -95,6 +96,7 @@ export default class Information extends Component {
   }
 
   render() {
+    console.log('information=>render');
     if (this.state.loading === '0') {
       return (<CustomLoadingView />)
     } else if (this.state.loading === '1') {

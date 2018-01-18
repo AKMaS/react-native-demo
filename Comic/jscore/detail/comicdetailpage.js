@@ -16,11 +16,12 @@ import {
   Animated,
   Dimensions,
   TouchableOpacity,
-
 } from 'react-native';
 import CustomLoadingView from '../inhome/customview/customLoadingview';
 import CustomReLoad from '../inhome/customview/customReLoad';
 import CustomCollapseText from '../inhome/customview/customcollapseText';
+// 导入native module
+import Jump2ReadPage from '../nativemodules/jump2readpage';
 // 漫画详情页接口
 const Comic_DetailUrl = 'http://a121.baopiqi.com/api/mh/getCartoonInfo.php?id=';
 
@@ -65,23 +66,24 @@ export default class ComicDetailPage extends Component {
   _renderItem(item) {
     return (
       <TouchableOpacity style={{ flex: 1 }}
-        onPress={() => this._navigate2ReadPage(item.order)}>
+        onPress={() => this._navigate2ReadPage(item.number, item.name)}>
         <Text style={styles.listItemStyle}>{item.title}</Text>
       </TouchableOpacity>
     );
   }
 
-  _navigate2ReadPage(page) {
+  _navigate2ReadPage(index, name) {
+
+    console.log(index);
+    // 跳转到React Native的阅读详情页，不会做
     // this.props.navigation.navigate('ComicRead', {
-    //   title: this.state.detailcomic[page].title,
-    //   number: this.state.detailcomic[page].number,
+    //   chapter: this.state.detailcomic,
     //   id: this.state.detailData.id,
+    //   order: page,
     // });
-    this.props.navigation.navigate('ComicRead', {
-      chapter: this.state.detailcomic,
-      id: this.state.detailData.id,
-      order: page,
-    });
+    let readurl = `http://a121.baopiqi.com/api/mh/getCartoonChapter.php?number=${index}&id=${this.props.navigation.state.params.id}&page=0&limit=1000000`;
+    // 试试跳转到Native
+    Jump2ReadPage.just2ReadPage(readurl, name);
   }
 
   render() {

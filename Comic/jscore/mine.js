@@ -15,8 +15,10 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-
-export default class Mine extends Component {
+import UserStorage from './userStorage';
+import { connect } from 'react-redux';
+import { logIn } from './redux/action/loginactions'
+class Mine extends Component {
   static navigationOptions = {
     tabBarLabel: '我的',
     tabBarIcon: ({ focused }) => (
@@ -32,27 +34,13 @@ export default class Mine extends Component {
     ),
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLogin: false,
-    }
-  }
-
   _login() {
-    if (this.state.isLogin) { return; }
-    this.timer = setTimeout(() => {
-      ToastAndroid.show('登录成功', ToastAndroid.SHORT);
-      this.setState({ isLogin: true });
-    }, 1000);
-  }
-
-  componentWillUnMount() {
-    this.timer && clearTimeout(this.timer);
+    !this.props.isLoggedIn ? this.props.dispatch(logIn()) : null;
   }
 
   render() {
-    const img = this.state.isLogin ? require('../imgs/icon/mine/icon.jpg') : require('../imgs/icon/ic_empty.png');
+    // const img = this.state.isLogin ? require('../imgs/icon/mine/icon.jpg') : require('../imgs/icon/ic_empty.png');
+    const img = this.props.isLoggedIn ? require('../imgs/icon/mine/icon.jpg') : require('../imgs/icon/ic_empty.png');
     return (
       <View >
         {/* 头像区 */}
@@ -71,30 +59,51 @@ export default class Mine extends Component {
             <Image
               style={styles.itemImg}
               source={require('../imgs/icon/mine/report.png')} />
-            <Text style={styles.itemTxt}>赏个好评吧</Text>
+            <View style={styles.itemTxt}>
+              <Text >赏个好评</Text>
+            </View>
           </View>
           <View style={styles.itemHolder}>
             <Image style={styles.itemImg} source={require('../imgs/icon/mine/share.png')} />
-            <Text style={styles.itemTxt}>分享给好友</Text>
+            <View style={styles.itemTxt}>
+              <Text >分享</Text>
+            </View>
           </View>
           <View style={styles.itemHolder}>
             <Image style={styles.itemImg} source={require('../imgs/icon/mine/forum.png')} />
-            <Text style={styles.itemTxt}>求书反馈</Text>
+            <View style={styles.itemTxt}>
+              <Text >反馈</Text>
+            </View>
           </View>
 
           <View style={styles.itemHolder}>
             <Image style={styles.itemImg} source={require('../imgs/icon/mine/weixin.png')} />
-            <Text style={styles.itemTxt}>添加关注</Text>
+            <View style={styles.itemTxt}>
+              <Text >关注</Text>
+            </View>
           </View>
           <View style={styles.itemHolder}>
             <Image style={styles.itemImg} source={require('../imgs/icon/mine/chilun.png')} />
-            <Text style={styles.itemTxt}>设置</Text>
+            <View style={styles.itemTxt}>
+              <Text >设置</Text>
+            </View>
           </View>
         </View>
       </View >
     );
   }
 }
+
+function mapStoreToProps(store) {
+  return {
+    status: store.login.status,
+    isLoggedIn: store.login.isLoggedIn,
+    data: store.login.user,
+  };
+}
+
+export default connect(mapStoreToProps)(Mine);
+
 const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
 
@@ -136,8 +145,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   itemTxt: {
-    fontSize: 12,
     marginLeft: 15,
+    justifyContent: 'center',
   },
-
 });

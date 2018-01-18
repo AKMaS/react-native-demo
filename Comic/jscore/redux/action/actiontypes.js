@@ -1,0 +1,23 @@
+'use strict'
+
+//测试登录Action
+export const LOGGED_IN = 'LOGGED_IN';
+export const LOGGED_OUT = 'LOGGED_OUT';
+export const LOGGED_ERROR = 'LOGGED_ERROR';
+export const LOGGED_DOING = 'LOGGED_DOING';
+//获取精品页面数据
+export const FETCH_PRIME_DOING = 'FETCH_PRIME_DOING';
+export const FETCH_PRIME_SUCCEED = 'FETCH_PRIME_SUCCEED';
+export const FETCH_PRIME_ERROR = 'FETCH_PRIME_ERROR';
+//获取排行榜页面数据
+export const FETCH_RANK_DOING = 'FETCH_RANK_DOING';
+export const FETCH_RANK_SUCCEED = 'FETCH_RANK_SUCCEED';
+export const FETCH_RANK_ERROR = 'FETCH_RANK_ERROR';
+//获取推荐页面数据
+export const FETCH_RECOMMEND_DOING = 'FETCH_RECOMMEND_DOING';
+export const FETCH_RECOMMEND_SUCCEED = 'FETCH_RECOMMEND_SUCCEED';
+export const FETCH_RECOMMEND_ERROR = 'FETCH_RECOMMEND_ERROR';
+//获取VIP页面数据
+export const FETCH_VIP_DOING = 'FETCH_VIP_DOING';
+export const FETCH_VIP_SUCCEED = 'FETCH_VIP_SUCCEED';
+export const FETCH_VIP_ERROR = 'FETCH_VIP_ERROR';

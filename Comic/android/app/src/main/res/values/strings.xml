@@ -1,3 +1,5 @@
 <resources>
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">iTat0367SAe9LjUW-VEL1eR4HNp3661d761a-790b-45d4-b5ad-f2bd1ad39f41</string>
     <string name="app_name">Comic</string>
+    <string name="title_activity_read">ReadActivity</string>
 </resources>

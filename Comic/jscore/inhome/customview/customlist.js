@@ -15,6 +15,7 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
+  ImageBackground
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import CustomImg from './customImg';
@@ -45,7 +46,9 @@ export default class CustomList extends Component {
         <CustomBtn
           text='更多'
           img={require('../../../imgs//icon/more.png')}
-          onClick={() => this.props.navigation.navigate('MoreItems', { title: this.props.dayTitle })}
+          onClick={() =>
+            this.props.navigation.navigate('MoreItems', { title: this.props.dayTitle })
+          }
         />
       </View >
     );
@@ -54,7 +57,7 @@ export default class CustomList extends Component {
     return (
       <View style={styles.comic}>
         {/* <CustomImg style={styles.comicIcon} img={{ uri: item.icon }} /> */}
-        <CustomImg params={{style:styles.comicIcon,img:{uri: item.icon },navigation:this.props.navigation,id:item.id}} />
+        <CustomImg params={{ style: styles.comicIcon, img: { uri: item.icon }, navigation: this.props.navigation, id: item.id }} />
         <Text style={styles.comicTitle} numberOfLines={1}>{item.name}</Text>
         <Text style={styles.comicAuthor} numberOfLines={1}>{item.author}</Text>
       </View>

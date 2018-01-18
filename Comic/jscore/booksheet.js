@@ -13,11 +13,16 @@ import {
   View,
   FlatList,
   Dimensions,
+  TouchableOpacity,
   Modal,
+  DatePickerAndroid,
+  Linking,
+  Alert
 } from 'react-native';
+import { connect } from 'react-redux';
 
 
-export default class BookSheet extends Component {
+class BookSheet extends Component {
   static navigationOptions = {
     tabBarLabel: '书架',
     tabBarIcon: ({ focused }) => (
@@ -30,80 +35,53 @@ export default class BookSheet extends Component {
           resizeMode='center'
           source={require('../imgs/icon/tabicon/normal/booksheet_normal.png')}
         />
-
     ),
   }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      readData: [],
-      modalFinishVisible: false,
-      modalHelpVisible: false,
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('nextProps:' + nextProps.isLoggedIn)
+    if (nextProps.isLoggedIn) {
+      return true
     }
-  }
-  componentDidMount() {
-    // const title =this.props.navigation
-    this._fetchData();
-  }
-
-  _fetchData() {
-
-    var readUrl = 'http://a121.baopiqi.com/api/mh/getCartoonChapter.php?number=45856&id=485&page=0&limit=1000000';
-    fetch(readUrl).then(response => response.json())
-      .then(data => this.setState({ readData: data, }))
-      .catch(e => console.log(e)).done();
+    return false
   }
 
   render() {
-    return (
+    const { isLoggedIn } = this.props
+    console.log('booksheet' + isLoggedIn)
+    if (!isLoggedIn) {
+      Alert.alert('请先登录', '',
+        [{
+          text: '确定', onPress: () =>
+            this.props.navigation.navigate('Mine')
+        }]
+      )
+      return (
+        <View>
+          <Text>登录 </Text>
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <Text>登录成功</Text>
+        </View>
+      )
+    }
 
 
-      <View>
-        <FlatList
-          data={this.state.readData}
-          keyExtractor={(item) => item.page}
-          renderItem={({ item }) => this._renderItem(item)}
-          pagingEnabled={true}
-          refreshing={false}
-          horizontal={true}
-          onEndReachedThreshold={0}
-          initialNumToRender={1}
-          getItemLayout={(data, index) => ({ length: width, offset: width * index, index })}
-          onEndReached={(distanceFromEnd) => {
-            this.setState({ modalFinishVisible: true });
-            console.log(distanceFromEnd)
-          }}
-        />
-
-        <Modal
-          animationType='none'
-          transparent={true}
-          onRequestClose={() => this._changeModal()}
-          visible={this.state.modalFinishVisible}>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-            <View style={{ height: height / 5, width: width / 2, backgroundColor: '#ffffff' }}>
-              < View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
-                <Text>sdfskskljfsk</Text>
-              </View>
-            </View>
-          </View>
-        </Modal >
-      </View>
-    );
-  }
-  _changeModal() {
-    this.setState({ modalHelpVisible: false, modalFinishVisible: false });
-  }
-  _renderItem(item) {
-    return (
-      <Image
-        style={{ width: width / 2, height: height / 2 }}
-        source={{ uri: item.icon }} />
-    );
   }
 }
 
+function mapStoreToProps(store) {
+  return {
+    status: store.login.status,
+    isLoggedIn: store.login.isLoggedIn,
+    data: store.login.user,
+  };
+}
+
+
+export default connect(mapStoreToProps)(BookSheet);
 
 const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({

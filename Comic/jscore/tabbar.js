@@ -40,20 +40,21 @@ export default Tab = TabNavigator({
       ),
     },
   },
-  BookSheet: {
-    screen: BookSheet,
-  },
   Informaiton: {
     screen: Informaiton,
+  },
+  BookSheet: {
+    screen: BookSheet,
   },
   Mine: {
     screen: Mine,
   },
 }, {
     tabBarPosition: 'bottom',
-    animationEnabled: true,
+    animationEnabled: false,
     swipeEnabled: false,
     lazy: true,
+    backBehavior: 'none',
     tabBarOptions: {
       showIcon: true,
       iconStyle: { height: 30, width: 30 },

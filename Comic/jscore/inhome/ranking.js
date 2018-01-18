@@ -3,7 +3,6 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
 import React, { Component } from 'react';
 import {
   Platform,
@@ -15,23 +14,22 @@ import {
   FlatList,
   Dimensions
 } from 'react-native';
+
+import { connect } from 'react-redux';
+
+import fetchdataactions from '../redux/action/fetchdataactions';
 import CustomImg from './customview/customImg';
 import CustomLoadingView from './customview/customLoadingview'
 import CustomReLoad from './customview/customReLoad';
 
 const TestMoreDataUrl = 'https://akmas.github.io/comic/fakedata/fakedata2.json';
-export default class Rank extends Component {
+class Rank extends Component {
   static navigationOptions = {
     tabBarLabel: '排行榜',
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      headerData: [],
-      moreData: [],
-      loading: '0',
-    };
   }
 
   componentDidMount() {
@@ -39,50 +37,43 @@ export default class Rank extends Component {
   }
 
   _fetchWrongData() {
-    this.setState({ loading: '-1' });
   }
 
   _fetchData() {
-    fetch(TestMoreDataUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        let [no1, no2, no3] = data;
-        let [r1, r2, r3, ...restdata] = data;
-        this.setState({
-          headerData: [no1, no2, no3],
-          moreData: this.state.moreData.concat(restdata),
-          loading: '1',
-        })
-      }
-      ).catch(e => this.setState({ loading: '-1' }))
+    const { fetchListData } = fetchdataactions
+    this.props.dispatch(fetchListData(TestMoreDataUrl, 'RANK'))
   }
-
   render() {
-    if (this.state.loading === '0') {
+    if (this.props.status === '0') {
       return (<CustomLoadingView />)
-    } else if (this.state.loading === '1') {
+    } else if (this.props.status === '1') {
+      const [no1, no2, no3] = this.props.data;
+      let [r1, r2, r3, ...restdata] = this.props.data;
+
+      const headerData = [no1, no2, no3];
+
       return (
         <FlatList
           renderItem={({ item }) => this._renderItem(item)}
           ListHeaderComponent={() => this._renderHeader()}
-          data={this.state.moreData}
-          extraData={this.state.headerData}
+          data={restdata}
+          extraData={headerData}
           keyExtractor={(item) => item.id} />
       )
-    } else if (this.state.loading === '-1') {
+    } else if (this.props.status === '-1') {
       return (
         <View style={{ justifyContent: 'center' }}>
           <CustomReLoad
-            onClick={() => { this._fetchData(); this.setState({ loading: '0' }) }} />
+            onClick={() => this._fetchData()} />
         </View>
       )
     }
-
+    return (<CustomLoadingView />)
   }
 
   _renderHeader() {
-    let [no1, no2, no3] = this.state.headerData;
-    if (no1 === undefined) {
+    const [no1, no2, no3] = this.props.data;
+    if (false) {
       return <View></View>
     } else {
       return (
@@ -123,11 +114,9 @@ export default class Rank extends Component {
 
   }
   _renderItem(item) {
-    console.log(item.icon);
     return (
       // holder
       <View style={styles.comicHolder}>
-
         <CustomImg params={{
           style: styles.comicIcon, img: { uri: item.icon },
           navigation: this.props.navigation, id: item.id
@@ -150,9 +139,18 @@ export default class Rank extends Component {
         </View>
       </View >
     );
-
   }
 }
+
+function mapStoreToProps(store) {
+  return {
+    status: store.fetch.rankPage.status,
+    data: store.fetch.rankPage.data,
+  }
+}
+
+export default connect(mapStoreToProps)(Rank);
+
 
 const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
