@@ -15,15 +15,14 @@ function _logIning() {
     return {
         type: ACTIONTYPE.LOGGED_DOING,
         status: 'fetching',
-
     }
 }
-function _logInSucc(json) {
+
+export function _logInSucc(data) {
     return {
         type: ACTIONTYPE.LOGGED_IN,
-        data: json,
+        data: data,
         status: 'succeed',
-
     }
 }
 
@@ -38,4 +37,3 @@ export function _logOut(e) {
         type: ACTIONTYPE.LOGGED_OUT,
     }
 }
- 

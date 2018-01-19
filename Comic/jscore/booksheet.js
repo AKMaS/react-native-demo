@@ -11,6 +11,7 @@ import {
   Image,
   Text,
   View,
+  ScrollView,
   FlatList,
   Dimensions,
   TouchableOpacity,
@@ -20,7 +21,6 @@ import {
   Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-
 
 class BookSheet extends Component {
   static navigationOptions = {
@@ -38,7 +38,7 @@ class BookSheet extends Component {
     ),
   }
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('nextProps:' + nextProps.isLoggedIn)
+
     if (nextProps.isLoggedIn) {
       return true
     }
@@ -46,8 +46,8 @@ class BookSheet extends Component {
   }
 
   render() {
-    const { isLoggedIn } = this.props
-    console.log('booksheet' + isLoggedIn)
+    const { isLoggedIn, collected } = this.props
+
     if (!isLoggedIn) {
       Alert.alert('请先登录', '',
         [{
@@ -57,29 +57,43 @@ class BookSheet extends Component {
       )
       return (
         <View>
-          <Text>登录 </Text>
+          <Text>未登录 </Text>
         </View>
       );
     } else {
       return (
-        <View>
-          <Text>登录成功</Text>
-        </View>
+        <ScrollView style={{ width: 500, height: 500 }}>
+          {this._renderCollectedItem()}
+        </ScrollView>
       )
     }
+  }
+  _renderCollectedItem() {
+    const { collected } = this.props
 
+    console.log(collected)
+    // return (
+    //   collected.data.map((item, i) =>
+    //     <View style={styles.comicHolder} key={i}>
+    //       <Image style={styles.comicIcon} source={{ uri: item.icon }} />
+    //       <Text>{item.name}</Text>
+    //     </View>
+    //   )
+    // )
 
   }
 }
 
 function mapStoreToProps(store) {
+  // console.log('mapStoreToProps')
+  // console.log(store.collected)
   return {
     status: store.login.status,
     isLoggedIn: store.login.isLoggedIn,
     data: store.login.user,
+    collected: store.collected,
   };
 }
-
 
 export default connect(mapStoreToProps)(BookSheet);
 
@@ -88,5 +102,14 @@ const styles = StyleSheet.create({
   tabicon: {
     width: 60,
     height: 60,
+  },
+  comicHolder: {
+    margin: 5,
+    flexDirection: 'row',
+    backgroundColor: '#ffffff',
+  },
+  comicIcon: {
+    width: 100,
+    height: 160,
   },
 });

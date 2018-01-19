@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  ToastAndroid
 } from 'react-native';
 
 export default class CustomImg extends Component {
@@ -20,7 +21,9 @@ export default class CustomImg extends Component {
 
   render() {
     return (
-      <TouchableOpacity activeOpacity={0.7} onPress={() => this._onClick()}>
+      <TouchableOpacity activeOpacity={0.7}
+        // onLongPress={() => this._onLongPress()}
+        onPress={() => this._onClick()}>
         <Image
           style={this.props.params.style}
           source={require('../../../imgs/icon/ic_empty.png')}>
@@ -33,5 +36,8 @@ export default class CustomImg extends Component {
   }
   _onClick() {
     this.props.params.navigation.navigate('ComicDetail', { title: '漫画介绍', id: this.props.params.id });
+  }
+  _onLongPress() {
+    ToastAndroid.show('收藏成功', ToastAndroid.SHORT);
   }
 }

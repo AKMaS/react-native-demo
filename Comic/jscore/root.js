@@ -8,9 +8,11 @@ import React, { Component } from 'react';
 import { BackHandler, Platform, ToastAndroid } from 'react-native';
 import MyStack from './stack';
 import { Provider, connect } from 'react-redux';
+import { PersistGate } from 'redux-persist/lib/integration/react'
 import configureStore from './redux/store/store';
 import SplashScreen from 'react-native-splash-screen'
-const store = configureStore();
+
+let { store, persistor } = configureStore();
 export default class Root extends Component {
 
   componentWillMount() {
@@ -26,9 +28,12 @@ export default class Root extends Component {
     SplashScreen.hide();
   }
   render() {
+
     return (
       <Provider store={store}>
-        <MyStack />
+        <PersistGate persistor={persistor}>
+          <MyStack />
+        </PersistGate>
       </Provider>
     );
   }

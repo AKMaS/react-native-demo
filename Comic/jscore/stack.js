@@ -48,8 +48,7 @@ const MyStack = StackNavigator({
 
 let codePushOptions = { checkFrequency: codePush.CheckFrequency.MANUAL };
 MyStack = codePush(codePushOptions)(MyStack);
-
-
+  
 export default MyStack;
 
 

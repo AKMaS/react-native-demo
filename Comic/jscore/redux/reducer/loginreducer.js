@@ -15,6 +15,8 @@ export default function user(state = defaultState, action) {
                 status: action.status,
             };
         case ACTIONTYPES.LOGGED_IN:
+        console.log('actionnnnn')
+        console.log(action.data)
             return {
                 ...state,
                 isLoggedIn: true,

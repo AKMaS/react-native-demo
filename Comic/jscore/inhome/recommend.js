@@ -149,7 +149,6 @@ function mapStoreToProps(store) {
 
 export default connect(mapStoreToProps)(Recommend);
 
-
 const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
   comicHolder: {

@@ -1,10 +1,13 @@
 package com.comic;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
 
+import com.comic.module.ShareModule;
 import com.facebook.react.ReactActivity;
+import com.umeng.socialize.UMShareAPI;
 
 import org.devio.rn.splashscreen.SplashScreen;
 
@@ -28,6 +31,7 @@ public class MainActivity extends ReactActivity {
         SplashScreen.show(this,true);  // here
         super.onCreate(savedInstanceState);
         JPushInterface.init(this);
+        ShareModule.initActivity(this);
         Log.e("MYLOG","onCreate");
     }
 
@@ -55,5 +59,11 @@ public class MainActivity extends ReactActivity {
         super.onResume();
         Log.e("MYLOG","onResume");
         JPushInterface.onResume(this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

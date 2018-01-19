@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { Text, TouchableOpacity ,AppRegistry} from 'react-native';
-import JPushModule from 'jpush-react-native';
+// import React, { Component } from 'react';
+// import { Text, TouchableOpacity ,AppRegistry} from 'react-native';
+// import JPushModule from 'jpush-react-native';
 
-export default class second extends Component {
+// export default class second extends Component {
 
-  constructor(props) {
-    super(props);
-  }
+//   constructor(props) {
+//     super(props);
+//   }
 
-  render() {
-    return (
-      <Text>skfjsdkfjskfo</Text>
-    );
-  }
-}
+//   render() {
+//     return (
+//       <Text>skfjsdkfjskfo</Text>
+//     );
+//   }
+// }
 
-AppRegistry.registerComponent('SecondActivity', () => second);
+// AppRegistry.registerComponent('SecondActivity', () => second);
 

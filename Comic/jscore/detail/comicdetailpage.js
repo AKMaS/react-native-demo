@@ -15,8 +15,11 @@ import {
   WebView,
   Animated,
   Dimensions,
+  ToastAndroid,
   TouchableOpacity,
 } from 'react-native';
+import { connect } from 'react-redux';
+import CollectBookActions from '../redux/action/collectbookactions'
 import CustomLoadingView from '../inhome/customview/customLoadingview';
 import CustomReLoad from '../inhome/customview/customReLoad';
 import CustomCollapseText from '../inhome/customview/customcollapseText';
@@ -25,7 +28,7 @@ import Jump2ReadPage from '../nativemodules/jump2readpage';
 // 漫画详情页接口
 const Comic_DetailUrl = 'http://a121.baopiqi.com/api/mh/getCartoonInfo.php?id=';
 
-export default class ComicDetailPage extends Component {
+class ComicDetailPage extends Component {
   //动态修改更多页面的 导航栏 标题 headerTitle
   static navigationOptions = ({ navigation }) => ({
     headerRight: <Text></Text>,
@@ -50,6 +53,7 @@ export default class ComicDetailPage extends Component {
       detailcomic: [],
       loading: '0',
     }
+    console.log(this.props)
   }
 
   componentDidMount() {
@@ -74,7 +78,6 @@ export default class ComicDetailPage extends Component {
 
   _navigate2ReadPage(index, name) {
 
-    console.log(index);
     // 跳转到React Native的阅读详情页，不会做
     // this.props.navigation.navigate('ComicRead', {
     //   chapter: this.state.detailcomic,
@@ -90,6 +93,13 @@ export default class ComicDetailPage extends Component {
     if (this.state.loading === '0') {
       return <CustomLoadingView />
     } else if (this.state.loading === '1') {
+      // { id, name,icon }
+      const comic = {
+        id: this.props.navigation.state.params.id,
+        name: this.state.detailData.name,
+        icon: this.state.detailData.icon,
+        status:true,
+      }
       return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
           {/* 头部封面 */}
@@ -106,7 +116,8 @@ export default class ComicDetailPage extends Component {
                   onPress={() => this._navigate2ReadPage(1)}>
                   <Text style={{ marginTop: 5, backgroundColor: '#66cc99' }}>开始阅读</Text>
                 </TouchableOpacity>
-                <TouchableOpacity >
+                <TouchableOpacity
+                  onPress={() => this._add2BookSheet(comic)}>
                   <Text style={{ marginTop: 5, backgroundColor: '#66cc99', marginLeft: 10 }}>收藏</Text>
                 </TouchableOpacity>
               </View>
@@ -143,7 +154,22 @@ export default class ComicDetailPage extends Component {
       </View>
     }
   }
+  _add2BookSheet(comic) {
+
+    this.props.dispatch(CollectBookActions(comic))
+  }
 }
+
+function mapStoreToProps(store) {
+  console.log('xxxxxxxx')
+  console.log(store.collected)
+  return {
+    collected: store.collected,
+  };
+}
+
+export default connect(mapStoreToProps)(ComicDetailPage)
+
 const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
   listItemStyle: {
