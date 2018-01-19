@@ -1,7 +1,10 @@
 # React Native Demo
 ### 多知道点总是好的
+
 ## [redux中文文档](http://cn.redux.js.org/docs/react-redux/api.html)
 ## 漫画阅读
+[Demo.apk]()
+
 **Todo**
 - [x] 基本框架搭建
 - [x] QQ登录与分享
