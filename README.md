@@ -1,6 +1,6 @@
 # React Native Demo
 
-
+## [redux中文文档](http://cn.redux.js.org/docs/react-redux/api.html)
 ## 漫画阅读
 **Todo**
 - [x] 基本框架搭建
