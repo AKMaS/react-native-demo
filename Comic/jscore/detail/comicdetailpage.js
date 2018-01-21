@@ -90,6 +90,7 @@ class ComicDetailPage extends Component {
   }
 
   render() {
+    console.log(this.state.loading)
     if (this.state.loading === '0') {
       return <CustomLoadingView />
     } else if (this.state.loading === '1') {
@@ -98,7 +99,7 @@ class ComicDetailPage extends Component {
         id: this.props.navigation.state.params.id,
         name: this.state.detailData.name,
         icon: this.state.detailData.icon,
-        status:true,
+        status: true,
       }
       return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -148,10 +149,11 @@ class ComicDetailPage extends Component {
         </View >
       );
     } else {
-      <View style={{ justifyContent: 'center' }}>
-        <CustomReLoad
-          onClick={() => { this._fetchData(); this.setState({ loading: '0' }) }} />
-      </View>
+      return (
+        <View style={{ justifyContent: 'center' }}>
+          <CustomReLoad
+            onClick={() => { this._fetchData(); this.setState({ loading: '0' }) }} />
+        </View>)
     }
   }
   _add2BookSheet(comic) {
