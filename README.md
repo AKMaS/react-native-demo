@@ -3,7 +3,7 @@
 
 ## [redux中文文档](http://cn.redux.js.org/docs/react-redux/api.html)
 ## 漫画阅读
-[Demo.apk]()
+[Demo.apk](https://github.com/AKMaS/react-native-demo/blob/master/comic.apk)
 
 **Todo**
 - [x] 基本功能实现
